@@ -1,0 +1,29 @@
+<h1>Courses</h1>
+<div class="row">
+{{#each courses}}
+    <div class="col s12 m6 xl4">
+        <div class="card">
+            <div class="card-image">
+                <img src="{{img}}" alt="{{title}}">
+            </div>
+            <div class="card-content">
+                <span class="card-title">{{title}}</span>
+                <p class="price">{{price}}</p>
+            </div>
+            <div class="card-action">
+                <a href="/courses/{{id}}">View</a>
+
+                {{#if @root.isAuth}}
+                    <a href="/courses/{{id}}/edit?allow=true">Edit</a>
+                    <form action="/card/add" method="POST">
+                        <input type="hidden" name="id" value="{{id}}">
+                        <input type="hidden" name="_csrf" value="{{@root.csrf}}">
+                        <button class="btn btn-primary">Buy</button>
+                    </form>
+                {{/if}}
+
+            </div>
+        </div>
+    </div>
+{{/each}}
+</div>
