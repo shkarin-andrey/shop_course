@@ -1,0 +1,23 @@
+<div class="row">
+    <div id="reset" class="col s12 m8 lx6 offset-m2 offset-xl3">
+        <h1>Restore account</h1>
+
+        {{#if error}}
+            <p class="alert">{{error}}
+                <span></span>
+            </p>
+        {{/if}}
+
+        <form action="/auth/reset" method="POST">
+            <div class="input-field">
+                <input name="email" id="email" type="email" class="validate" required>
+                <label for="email">Email</label>
+                <span class="helper-text" data-error="Print email"></span>
+            </div>
+
+            <input type="hidden" name="_csrf" value="{{csrf}}">
+
+            <button class="btn auth__btn ptn-primary">Reset</button>
+        </form>
+    </div>
+</div>

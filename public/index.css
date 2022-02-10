@@ -90,7 +90,8 @@ footer {
 }
 
 #login h1,
-#register h1 {
+#register h1,
+#reset h1 {
     text-align: center;
 }
 

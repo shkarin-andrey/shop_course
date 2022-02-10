@@ -3,6 +3,8 @@ const path = require('path')
 const csrf = require('csurf')
 const flash = require('connect-flash')
 const mongoose = require('mongoose')
+const helmet = require('helmet')
+const compression = require('compression')
 const exphbs = require('express-handlebars')
 const session = require('express-session')
 const MongoStore = require('connect-mongodb-session')(session)
@@ -16,8 +18,8 @@ const Handlebars = require('handlebars')
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
 const varMiddleware = require('./middleware/variables')
 const userMiddleware = require('./middleware/user')
+const keys = require('./keys')
 
-const MONGODB_URI = 'mongodb+srv://andrey:1Zfjcfc1SSpD8pUC@cluster0.d4st5.mongodb.net/shop'
 const app = express()
 const hbs = exphbs.create({
     defaultLayout: 'main',  // папка default layout 
@@ -27,7 +29,7 @@ const hbs = exphbs.create({
 
 const store = new MongoStore({
     collection: 'sessions',
-    uri: MONGODB_URI
+    uri: keys.MONGODB_URI
 })
 
 app.engine('hbs', hbs.engine) 
@@ -37,13 +39,15 @@ app.set('views', 'views')  // Если изменится, нужно помен
 app.use(express.static(path.join(__dirname, 'public')))  // добовляем статическую папку public (будт по умолчанию подключать все из папки)
 app.use(express.urlencoded({extended: true}))  // method post для страницы "добавить курс"
 app.use(session({
-    secret: 'some secret value',
+    secret: keys.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store
 }))
 app.use(csrf())
 app.use(flash())
+// app.use(helmet())
+app.use(compression())
 app.use(varMiddleware)
 app.use(userMiddleware)
 
@@ -58,7 +62,7 @@ const PORT = process.env.PORT || 3000
 
 async function start() {
     try {
-        await mongoose.connect(MONGODB_URI, {
+        await mongoose.connect(keys.MONGODB_URI, {
             useNewUrlParser: true
         });
         
