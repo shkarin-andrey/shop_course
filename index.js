@@ -24,6 +24,7 @@ const app = express()
 const hbs = exphbs.create({
     defaultLayout: 'main',  // папка default layout 
     extname: 'hbs', 
+    helpers: require('./utils/hbs-helpers'),
     handlebars: allowInsecurePrototypeAccess(Handlebars)
 })
 
@@ -46,7 +47,7 @@ app.use(session({
 }))
 app.use(csrf())
 app.use(flash())
-app.use(helmet())
+// app.use(helmet())
 app.use(compression())
 app.use(varMiddleware)
 app.use(userMiddleware)
